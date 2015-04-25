@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# gendata2.sh - Automatizacion de programas para determinar posicion de mancha solar
+# gendata.sh - Automatizacion de programas para determinar posicion de mancha solar
 #
 # SINOPSIS
 #   gendata.sh [directorio imgs] [archivo datos]
@@ -74,7 +74,7 @@ getcoortopcent() {
 #  Muestra centro disco: SOLRC(xcs, ycs)
    SOLRC="$(sed -n -e '1p' $1.txt)"
 #  Muestra centro de la mancha mas grande; MSRC(xcm, ycm, area)
-   AMAXMS="$(sed -e '1d' $1.txt | awk -f manchamax-3.awk)"
+   AMAXMS="$(sed -e '1d' $1.txt | awk -f ../share/awk/manchamax-5.awk)"
    MSRC="$(awk -v tammax=$AMAXMS '$NF ~ "^"tammax"$" { print $2, $3, $NF }' $1.txt)"
    if [ "$debug" = "1" ]; then
       echo "Fecha, centro disco solar, centroide mancha solar, area, tiempo:" >> log.txt

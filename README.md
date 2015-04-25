@@ -23,6 +23,7 @@ REQUISITOS
 * Paquete Netpbm <[http://netpbm.sourceforge.net/](http://netpbm.sourceforge.net/)>
 * Perl <[https://www.perl.org/](https://www.perl.org/)>
 * Coreutils <[https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)>,  *sed*, *grep*, *awk*. Incluidos por defecto en sistemas UNIX (Linux y Mac). Para Windows incluidos en <[MinGW/MSYS](http://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/)>.
+* Kalendas <[https://github.com/mikemolina/kalendas](https://github.com/mikemolina/kalendas)>.
 * Compilador fortran 77 (consulte en la distribución de su SO).
 
 USO

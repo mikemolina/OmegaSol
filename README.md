@@ -20,8 +20,8 @@ El proyecto publicado aquí aún no contiene una rutina de instalación ni una d
 REQUISITOS
 ----------
 
-* Paquete Netpbm <[http://netpbm.sourceforge.net/](http://netpbm.sourceforge.net/)>
-* Perl <[https://www.perl.org/](https://www.perl.org/)>
+* Paquete Netpbm <[http://netpbm.sourceforge.net/](http://netpbm.sourceforge.net/)>.
+* Perl <[https://www.perl.org/](https://www.perl.org/)>.
 * Coreutils <[https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)>,  *sed*, *grep*, *awk*. Incluidos por defecto en sistemas UNIX (Linux y Mac). Para Windows incluidos en <[MinGW/MSYS](http://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/)>.
 * Kalendas <[https://github.com/mikemolina/kalendas](https://github.com/mikemolina/kalendas)>.
 * Compilador fortran 77 (consulte en la distribución de su SO).
@@ -34,6 +34,14 @@ Compilar el código en *./src* con **make**; las imágenes HMI deben ser de tama
     ./gendata.sh ruta/a/directorio/imagenes datos.txt
 
 Las efemérides de SDO están aproximadamente para Feb-2015 y Mar-2015.
+
+EJEMPLO
+-------
+
+Para ejecutar el ejemplo de prueba, escribir en la terminal
+
+    cd bin
+    ./gendata.sh ../share/data/ test.txt
 
 LICENCIA
 --------

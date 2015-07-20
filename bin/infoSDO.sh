@@ -20,11 +20,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Direccion archivo de datos efemerides SDO
-srcdata="../share/efemerides/efemerides_SDO-ICEJ2000-feb.txt.gz"
 
-if [ $# -le 1 ]; then
-    echo "Uso: $0 YYYY-MM-DD hh:mm"
+if [ $# -le 2 ]; then
+    echo "Uso: $0 YYYY-MM-DD hh:mm [archivo gz]"
     exit 1
 fi
 
@@ -38,6 +36,13 @@ DD=`echo $1 | sed 's/[0-9]*-[0-9]*-\([0-9]*\)/\1/'`
 hh=`echo $2 | sed 's/\([0-9]*\):[0-9]*/\1/'`
 # Minuto  
 mm=`echo $2 | sed 's/[0-9]*:\([0-9]*\)/\1/'`
+# Direccion archivo de datos efemerides SDO
+if [ -f "$3" ]; then
+   srcdata="$3"
+else
+   echo "No existe archivo efemerides \"$3\"."
+   exit 1
+fi
 
 # Nombre del mes abreviado
 case ${MM} in

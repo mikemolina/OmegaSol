@@ -3,12 +3,12 @@ OmegaSol
 
 **Observador de Manchas Estratégico para la Generación Automática** de datos de posición 3D de manchas solares
 
-![Screenshot](https://raw.githubusercontent.com/mikemolina/OmegaSol/master/share/images/20150214_101555_4096_HMII-Trayectoria.png)
+![Screenshot](https://raw.githubusercontent.com/mikemolina/OmegaSol/master/share/doc/20150214_101555_4096_HMII-Trayectoria.png)
 
 SINOPSIS
 -------
 
-    ./gendata.sh [directorio imágenes] [archivo datos]
+    ./gendata.sh [directorio imágenes] [archivo awk] [archivo efemérides SDO] [archivo datos]
 
 DESCRIPCIÓN
 -----------
@@ -20,20 +20,22 @@ El proyecto publicado aquí aún no contiene una rutina de instalación ni una d
 REQUISITOS
 ----------
 
-* Paquete Netpbm <[http://netpbm.sourceforge.net/](http://netpbm.sourceforge.net/)>.
-* Perl <[https://www.perl.org/](https://www.perl.org/)>.
-* Coreutils <[https://www.gnu.org/software/coreutils/](https://www.gnu.org/software/coreutils/)>,  *sed*, *grep*, *awk*. Incluidos por defecto en sistemas UNIX (Linux y Mac). Para Windows incluidos en <[MinGW/MSYS](http://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/)>.
-* Kalendas <[https://github.com/mikemolina/kalendas](https://github.com/mikemolina/kalendas)>.
+* Paquete [Netpbm](http://netpbm.sourceforge.net/) (consulte en la distribución de su SO).
+* [Perl](https://www.perl.org/).
+* Herramientas de [Coreutils](https://www.gnu.org/software/coreutils/) (*sed*, *grep*, *awk*), incluidos por defecto en sistemas UNIX (Linux y Mac). Para Windows incluidos en [MinGW/MSYS](http://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/).
+* [Kalendas](http://mikemolina.github.io/kalendas-home).
 * Compilador fortran 77 (consulte en la distribución de su SO).
 
 USO
 ---
 
-Compilar el código en *./src* con **make**; las imágenes HMI deben ser de tamaño 4096x4096. En la terminal ir al directorio *./bin* y ejecutar
+Compilar el código en *./src* con **make**; las imágenes HMI deben ser de tamaño 4096x4096; el script **infoStereo.sh** necesita conexión a red. En la terminal ir al directorio *./bin* y ejecutar
 
-    ./gendata.sh ruta/a/directorio/imagenes datos.txt
+    ./gendata.sh ruta/directorio/imagenes ruta/archivo/awk ruta/efemérides/SDO datos.txt
 
-Las efemérides de SDO están aproximadamente para Feb-2015 y Mar-2015.
+Las efemérides de SDO son generadas desde [HORIZONS Web-Interface](http://ssd.jpl.nasa.gov/horizons.cgi), en un archivo de texto comprimido en *gzip* según el formulario de la figura.
+
+![Screenshot](https://raw.githubusercontent.com/mikemolina/OmegaSol/master/share/doc/formulario-horizons.png)
 
 EJEMPLO
 -------
@@ -41,7 +43,8 @@ EJEMPLO
 Para ejecutar el ejemplo de prueba, escribir en la terminal
 
     cd bin
-    ./gendata.sh ../share/data/ test.txt
+    ./gendata.sh ../share/images/mancha ../share/awk/manchamax-5.awk \
+    ../share/efemerides/efemerides_SDO-ICEJ2000-feb.txt.gz ../share/data/test-inf.dat
 
 LICENCIA
 --------

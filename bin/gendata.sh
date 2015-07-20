@@ -3,7 +3,7 @@
 # gendata.sh - Automatizacion de programas para determinar posicion de mancha solar
 #
 # SINOPSIS
-#   gendata.sh [directorio imgs] [archivo datos]
+#   gendata.sh [directorio imgs]  [archivo awk] [archivo efem-SDO] [archivo datos]
 #
 # Notas
 #  * Rutina para mostrar centro de una mancha mas grande que un area minima (AMINMS),
@@ -74,7 +74,8 @@ getcoortopcent() {
 #  Muestra centro disco: SOLRC(xcs, ycs)
    SOLRC="$(sed -n -e '1p' $1.txt)"
 #  Muestra centro de la mancha mas grande; MSRC(xcm, ycm, area)
-   AMAXMS="$(sed -e '1d' $1.txt | awk -f ../share/awk/manchamax-5.awk)"
+   awkfile="$2"
+   AMAXMS="$(sed -e '1d' $1.txt | awk -f $awkfile)"
    MSRC="$(awk -v tammax=$AMAXMS '$NF ~ "^"tammax"$" { print $2, $3, $NF }' $1.txt)"
    if [ "$debug" = "1" ]; then
       echo "Fecha, centro disco solar, centroide mancha solar, area, tiempo:" >> log.txt
@@ -98,13 +99,14 @@ getcoortierra() {
 # Funcion para obtener coordenadas ECI geocentricas del satelite SDO
 getcoorsdo() {
    arg="$(cadt2fecha $1)"
-   CGS=`./infoSDO.sh $arg`
+   efemfile="$2"
+   CGS=`./infoSDO.sh $arg $efemfile`
    echo "$CGS"
 }
 
 # Ayuda
-if [ $# -lt 2 -o $# -gt 2 ]; then
-   echo "Uso: `basename \"$0\"` [directorio imagenes] [archivo datos]" 1>&2
+if [ $# -lt 4 -o $# -gt 4 ]; then
+   echo "Uso: `basename \"$0\"` [directorio imagenes] [archivo awk] [archivo efem-SDO] [archivo datos]" 1>&2
    exit 1
 fi
 
@@ -123,12 +125,30 @@ else
    exit 1
 fi
 
+# Archivo awk
+if [ -f "$2" ]
+then
+   AWKINFILE="$2"
+else
+   echo "No existe archivo awk \"$2\"."
+   exit 1
+fi
+
+# Archivo efemerides SDO
+if [ -f "$3" ]
+then
+   EFEMINFILE="$3"
+else
+   echo "No existe archivo efemerides SDO \"$3\"."
+   exit 1
+fi
+
 # Lista de imagenes
 LSTIMG="$(ls $IMGDIR | sort)"
 echo "Numero de imagenes a procesar: $(echo $LSTIMG | wc -w)"
 
 # Archivo de salida
-OUTDATA="$2"
+OUTDATA="$4"
 test -f "$OUTDATA" && rm -f "$OUTDATA"
 test -f log.txt && rm -f log.txt
 
@@ -142,13 +162,13 @@ do
    echo "   Analizando imagen $fecha ..."
    jpg2pgmarray "${IMGDIR}/${img}"
    getdatacentro "$img" "$fecha"
-   DAT1="$(getcoortopcent $fecha)"
+   DAT1="$(getcoortopcent $fecha $AWKINFILE)"
    echo "$DAT1" | sed -e 's/[[:space:]]\+/\n/g' > input-${fecha}.txt
    echo "   consultando posicion de la tierra ..."
    DAT2="$(getcoortierra $fecha)"
    echo $DAT2 | sed -e 's/[[:space:]]\+/\n/g' >> input-${fecha}.txt
    echo "   consultando posicion del satelite ..."
-   DAT3="$(getcoorsdo $fecha)"
+   DAT3="$(getcoorsdo $fecha $EFEMINFILE)"
    echo $DAT3 | sed -e 's/[[:space:]]\+/\n/g' >> input-${fecha}.txt
    echo "   hallando coordenadas de la mancha ..."
    ./rimg2resf < input-${fecha}.txt >> $OUTDATA
